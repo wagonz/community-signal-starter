@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ../backend
+    environment:
+      DATABASE_URL: postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB
+      PORT: 8080
+      CORS_ORIGIN: http://localhost:5173
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../backend/src:/app/src
+
+  frontend:
+    build: ../frontend
+    environment:
+      VITE_API_BASE_URL: ${API_BASE_URL}
+      VITE_WS_URL: ${WS_URL}
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../frontend/src:/app/src
+      - ../frontend/index.html:/app/index.html
+      - ../frontend/public:/app/public
+
+  caddy:
+    image: caddy:2-alpine
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+    environment:
+      API_HOST: backend:8080
+      FE_HOST: frontend:5173
+
+volumes:
+  db_data:

@@ -1,0 +1,20 @@
+{
+  auto_https off
+}
+
+:80 {
+  handle /api* {
+    reverse_proxy {env.API_HOST}
+  }
+
+  @ws {
+    path /socket.io*
+  }
+  handle @ws {
+    reverse_proxy {env.API_HOST}
+  }
+
+  handle {
+    reverse_proxy {env.FE_HOST}
+  }
+}
