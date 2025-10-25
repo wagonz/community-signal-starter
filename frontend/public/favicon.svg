@@ -1,1 +1,27 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="#0ea5e9"/><path d="M50 20 L60 40 L40 40 Z" fill="white"/><circle cx="50" cy="58" r="6" fill="white"/></svg>
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#bgGradient)"/>
+
+  <!-- Signal waves (outer) -->
+  <path d="M 30 35 Q 25 50 30 65" stroke="white" stroke-width="3" fill="none" opacity="0.4"/>
+  <path d="M 70 35 Q 75 50 70 65" stroke="white" stroke-width="3" fill="none" opacity="0.4"/>
+
+  <!-- Signal waves (middle) -->
+  <path d="M 35 40 Q 32 50 35 60" stroke="white" stroke-width="3" fill="none" opacity="0.6"/>
+  <path d="M 65 40 Q 68 50 65 60" stroke="white" stroke-width="3" fill="none" opacity="0.6"/>
+
+  <!-- Center location pin -->
+  <path d="M 50 30 C 45 30 41 34 41 39 C 41 46 50 55 50 55 C 50 55 59 46 59 39 C 59 34 55 30 50 30 Z" fill="white"/>
+  <circle cx="50" cy="39" r="4" fill="#6366f1"/>
+
+  <!-- Bottom pulse -->
+  <circle cx="50" cy="70" r="3" fill="white" opacity="0.8"/>
+</svg>
